@@ -1,20 +1,50 @@
-//  Modify this class so it uses the HDMIPlug's 
-// digitalDisplay() implementation. Note that you 
-// still must use a VidePlug (i.e., don't just replace
-// plug with an HDMIPlug object.
+/** CHANGE: Added HDMIAdapter class to adapt HDMIPlug to the VideoPlug interface. **/
 
+// VideoPlug interface
+interface VideoPlug {
+    void display(int width, int height);
+}
+
+// VGAPlug class implementing VideoPlug
+class VGAPlug implements VideoPlug {
+    public void display(int width, int height) {
+        System.out.println("Displaying VGA video at resolution: " + width + "x" + height);
+    }
+}
+
+// HDMIPlug class (does not implement VideoPlug)
+class HDMIPlug {
+    public void digitalDisplay(int width, int height) {
+        System.out.println("Displaying HDMI video at resolution: " + width + "x" + height);
+    }
+}
+
+// HDMIAdapter class to adapt HDMIPlug to VideoPlug
+class HDMIAdapter implements VideoPlug {
+    private HDMIPlug hdmiPlug;
+
+    public HDMIAdapter(HDMIPlug hdmiPlug) {
+        this.hdmiPlug = hdmiPlug;
+    }
+
+    public void display(int width, int height) {
+        // Call the HDMIPlug's digitalDisplay method
+        hdmiPlug.digitalDisplay(width, height);
+    }
+}
+
+// Modified VideoSocket class
 public class VideoSocket {
 
-	public main(){
-		// plug MUST be of type VideoPlug
-		VideoPlug plug = new VGAPlug();
+    public static void main(String[] args) {
+        // plug MUST be of type VideoPlug
+        VideoPlug plug = new HDMIAdapter(new HDMIPlug());
 
-		// call plug.display() 
-		plug.display(1024, 768);
+        // Call plug.display() - This will now use HDMIPlug's digitalDisplay()
+        plug.display(1024, 768);
 
-		// use plug in a method which only takes objects
-		// of type VideoPlug (i.e., it can't take HDMIPlugs)
-		// This line MUST be run on the plug
-		someOtherClass.plugDiagnostic(plug);
-	}
-}	
+        // Use plug in a method which only takes objects of type VideoPlug
+        // This line MUST be run on the plug
+        someOtherClass.plugDiagnostic(plug);
+    }
+}

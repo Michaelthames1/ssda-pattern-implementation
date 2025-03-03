@@ -1,39 +1,5 @@
-/** CHANGE: Added HDMIAdapter class to adapt HDMIPlug to the VideoPlug interface. **/
+/** CHANGE: Modified VideoSocket to use HDMIAdapter for HDMIPlug's digitalDisplay() implementation. **/
 
-// VideoPlug interface
-interface VideoPlug {
-    void display(int width, int height);
-}
-
-// VGAPlug class implementing VideoPlug
-class VGAPlug implements VideoPlug {
-    public void display(int width, int height) {
-        System.out.println("Displaying VGA video at resolution: " + width + "x" + height);
-    }
-}
-
-// HDMIPlug class (does not implement VideoPlug)
-class HDMIPlug {
-    public void digitalDisplay(int width, int height) {
-        System.out.println("Displaying HDMI video at resolution: " + width + "x" + height);
-    }
-}
-
-// HDMIAdapter class to adapt HDMIPlug to VideoPlug
-class HDMIAdapter implements VideoPlug {
-    private HDMIPlug hdmiPlug;
-
-    public HDMIAdapter(HDMIPlug hdmiPlug) {
-        this.hdmiPlug = hdmiPlug;
-    }
-
-    public void display(int width, int height) {
-        // Call the HDMIPlug's digitalDisplay method
-        hdmiPlug.digitalDisplay(width, height);
-    }
-}
-
-// Modified VideoSocket class
 public class VideoSocket {
 
     public static void main(String[] args) {
